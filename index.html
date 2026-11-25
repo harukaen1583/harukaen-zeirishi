@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>春香園 税理士提出書類</title>
+<meta name="theme-color" content="#5b3f8c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="提出書類">
+<style>
+:root{font-family:system-ui,sans-serif;color:#2a2633;background:#f6f4f8;--accent:#5b3f8c;--soft:#f0ebf7;--ok:#18794e;--okSoft:#e3f3ea;--warn:#b42318}
+*{box-sizing:border-box}
+body{margin:0 auto;padding:0 14px 24px;max-width:920px;background:#f6f4f8}
+h1{font-size:22px;margin:12px 0 4px}h2{font-size:20px;margin:0 0 8px;color:var(--accent)}h3{font-size:17px;margin:16px 0 6px}
+.card{background:#fff;padding:16px;border-radius:15px;margin:12px 0;box-shadow:0 2px 8px #0000000c;border-top:5px solid var(--accent)}
+label{display:block;font-weight:650;margin:14px 0 6px}
+input,select,textarea{font:inherit;font-size:19px;padding:12px;width:100%;min-height:48px;border:1px solid #b5aec0;border-radius:9px;background:#fff;color:#2a2633}
+textarea{min-height:70px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
+.primary{width:100%;padding:15px 8px;font-size:19px;font-weight:700;border:0;border-radius:10px;background:var(--accent);color:#fff;margin-top:18px;line-height:1.4}
+.sub{width:100%;padding:12px;font-size:17px;font-weight:700;border:1px solid var(--accent);border-radius:10px;background:#fff;color:var(--accent);margin-top:10px}
+button{font:inherit;cursor:pointer}
+button:disabled{opacity:.6}
+.note{font-size:14px;color:#615a6b;line-height:1.6}
+.status{white-space:pre-wrap;font-weight:650;margin-top:10px;min-height:1.5em}
+/* 上のタブ */
+#top{position:sticky;top:0;z-index:20;margin:0 -14px;box-shadow:0 2px 6px #00000026;background:#fff}
+#mainTabs{display:flex}
+#mainTabs button{flex:1;padding:14px 2px;font-size:17px;font-weight:700;border:0;border-bottom:4px solid transparent;background:#fff;color:#615a6b}
+#mainTabs button.on{color:var(--accent);border-bottom-color:var(--accent);background:#faf8fc}
+/* 書類名のボタン */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{padding:11px 14px;font-size:17px;font-weight:650;border:1px solid #b5aec0;border-radius:10px;background:#fff;color:#2a2633}
+.chips button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;padding:12px 4px;font-size:17px;font-weight:700;border:1px solid #b5aec0;border-radius:999px;background:#fff;color:#2a2633}
+.seg button.on{background:var(--soft);color:var(--accent);border:2px solid var(--accent)}
+.hint{font-size:14px;background:var(--soft);color:var(--accent);padding:8px 10px;border-radius:8px;margin-top:8px;font-weight:650}
+/* 一覧 */
+.visit{border-top:5px solid var(--accent)}
+.visit h2{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.visit h2 small{font-size:14px;color:#615a6b;font-weight:600}
+.item{display:flex;gap:10px;align-items:flex-start;padding:11px 0;border-top:1px solid #ebe7f0}
+.item:first-of-type{border-top:0}
+.item .txt{flex:1;min-width:0}
+.item .nm{font-size:18px;font-weight:700}
+.item .pd{font-size:16px;color:#3d3647;margin-top:2px}
+.item .mm{font-size:14px;color:#615a6b;margin-top:3px;white-space:pre-wrap}
+.item .acts{display:flex;gap:6px;flex:none}
+.item .acts button{padding:8px 10px;font-size:14px;font-weight:700;border:1px solid #b5aec0;border-radius:8px;background:#fff;color:#2a2633}
+.item .acts button.del{color:var(--warn);border-color:#e3b3ae}
+.item .acts button.del.sure{background:var(--warn);color:#fff;border-color:var(--warn)}
+/* 書類ごと */
+.years{display:flex;gap:8px;margin-bottom:4px}
+.years button{flex:1;padding:12px 2px;font-size:17px;font-weight:700;border:1px solid #b5aec0;border-radius:10px;background:#fff;color:#2a2633}
+.years button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.todo{margin:6px 0 0;padding:0;list-style:none}
+.todo li{padding:10px 12px;margin:6px 0;border-radius:9px;background:#fdecea;color:#7a1d14;font-weight:700;font-size:17px}
+.alldone{padding:12px;border-radius:9px;background:var(--okSoft);color:var(--ok);font-weight:700;font-size:17px}
+.doc{padding:12px 0;border-top:1px solid #ebe7f0}
+.doc:first-of-type{border-top:0}
+.doc .nm{font-size:18px;font-weight:700;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tag{font-size:14px;padding:2px 9px;border-radius:999px;font-weight:700;white-space:nowrap}
+.tag.ok{background:var(--okSoft);color:var(--ok)}
+.tag.ng{background:#fdecea;color:var(--warn)}
+.tag.fut{background:#eee;color:#615a6b}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin:8px 0 4px}
+.months span{text-align:center;font-size:13px;padding:7px 0;border-radius:5px;background:#eee;color:#888;font-weight:700}
+.months span.ok{background:var(--ok);color:#fff}
+.months span.ng{background:#fdecea;color:var(--warn);outline:1px solid #f0b6ae}
+.doc .line{font-size:15px;color:#3d3647;margin-top:3px}
+/* いつもの書類の設定 */
+.tpl{display:grid;grid-template-columns:1fr 118px auto auto;gap:6px;align-items:center;margin:6px 0}
+.tpl input[type=text]{font-size:17px;padding:9px;min-height:44px}
+.tpl select{font-size:16px;padding:9px 6px;min-height:44px}
+.tpl label{display:flex;align-items:center;gap:4px;margin:0;font-size:14px;font-weight:600;white-space:nowrap}
+.tpl input[type=checkbox]{width:22px;height:22px;min-height:22px;padding:0}
+.tpl button{padding:9px 8px;font-size:14px;font-weight:700;border:1px solid #e3b3ae;border-radius:8px;background:#fff;color:var(--warn)}
+@media(max-width:520px){body{padding:0 9px 18px}#top{margin:0 -9px}.card{padding:12px}.months span{font-size:11px}.tpl{grid-template-columns:1fr 96px auto;}.tpl button{grid-column:3}.tpl label{grid-column:3;grid-row:1}}
+</style>
+</head>
+<body>
+<div id="top">
+  <div id="mainTabs" role="tablist" style="display:none">
+    <button type="button" role="tab" data-tab="entry" class="on">記録する</button>
+    <button type="button" role="tab" data-tab="visits">面会ごと</button>
+    <button type="button" role="tab" data-tab="docs">書類ごと</button>
+  </div>
+</div>
+<h1>春香園 税理士提出書類</h1>
+
+<div class="card" id="keyCard" style="display:none">
+  <h2>合言葉</h2>
+  <div class="note">はじめに一度だけ、合言葉を入れてください（ほかの春香園アプリと同じです）。この端末が覚えておきます。</div>
+  <label for="keyInput">合言葉</label>
+  <input id="keyInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false">
+  <button class="primary" id="keyBtn" type="button">はじめる</button>
+  <div class="status" id="keyStatus" role="status" aria-live="polite"></div>
+</div>
+<div class="card" id="loadCard"><div class="note" id="loadNote">読み込み中です…</div></div>
+
+<div id="app" style="display:none">
+<!-- 記録する -->
+<section data-tab="entry">
+<div class="card">
+  <h2 id="formTitle">提出した書類を記録</h2>
+  <label for="date">提出日</label>
+  <input id="date" type="date">
+
+  <label>書類名</label>
+  <div class="chips" id="nameChips"></div>
+  <input id="name" type="text" placeholder="ほかの書類は、ここに書く" style="margin-top:8px" autocomplete="off">
+
+  <label for="year">対象の年</label>
+  <select id="year"></select>
+
+  <label>期間</label>
+  <div class="seg" id="kindSeg">
+    <button type="button" data-kind="月" class="on">月の範囲</button>
+    <button type="button" data-kind="年">1年分・期間なし</button>
+  </div>
+  <div id="monthBox" class="row" style="margin-top:10px">
+    <select id="from" aria-label="はじめの月"></select><span>〜</span><select id="to" aria-label="おわりの月"></select>
+  </div>
+  <div class="hint" id="hint" style="display:none"></div>
+
+  <label for="memo">メモ（なくてもよい）</label>
+  <textarea id="memo" placeholder="例：原本を渡した、コピーを渡した など"></textarea>
+
+  <button class="primary" id="saveBtn" type="button">保存</button>
+  <button class="sub" id="cancelBtn" type="button" style="display:none">直すのをやめる</button>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+</div>
+<div class="card" id="sameDayCard" style="display:none">
+  <h2 id="sameDayTitle">この日に出したもの</h2>
+  <div id="sameDayList"></div>
+</div>
+</section>
+
+<!-- 面会ごと -->
+<section data-tab="visits" hidden>
+  <div id="visitList"></div>
+</section>
+
+<!-- 書類ごと -->
+<section data-tab="docs" hidden>
+<div class="card">
+  <h2>まだ出していないもの</h2>
+  <div class="years" id="yearBtns"></div>
+  <div id="todoBox"></div>
+  <div class="note" id="todoNote"></div>
+</div>
+<div class="card">
+  <h2 id="docsTitle">いつもの書類</h2>
+  <div id="docBox"></div>
+</div>
+<div class="card" id="otherCard" style="display:none">
+  <h2>そのほかに出した書類</h2>
+  <div id="otherBox"></div>
+</div>
+<div class="card">
+  <h2>いつもの書類の設定</h2>
+  <div class="note">毎年出す書類を入れておくと、「記録する」でボタンから選べて、まだ出していないものが分かります。「月ごと」は現金出納帳のように何か月分かずつ出すもの、「年1回」は控除のはがきのように1年に1回出すものです。</div>
+  <div id="tplBox"></div>
+  <button class="sub" id="tplAdd" type="button">＋ 書類を足す</button>
+  <button class="primary" id="tplSave" type="button">いつもの書類を保存</button>
+  <div class="status" id="tplStatus" role="status" aria-live="polite"></div>
+</div>
+</section>
+<div class="note" id="sheetNote">記録は専用のGoogleスプレッドシートに保存されます。</div>
+</div>
+
+<script>
+'use strict';
+// 保存先（GAS のウェブアプリのアドレス）
+var API_URL = 'https://script.google.com/macros/s/AKfycbxJy0nf7Qh7s6Gzba1_giH3YLUT6GOz5M_8rq99IR9fX2oS37WobpWVSFyQfN2yLlUi/exec';
+var $ = function (id) { return document.getElementById(id); };
+var WD = ['日','月','火','水','木','金','土'];
+var docs = [], templates = [], tab = 'entry', kind = '月', editId = '', viewYear = 0, busy = false, picked = '';
+
+function pad(n) { return String(n).padStart(2, '0'); }
+function today() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function jpDate(s, withYear) { var d = new Date(s + 'T12:00:00'); return (withYear ? d.getFullYear() + '年' : '') + (d.getMonth() + 1) + '月' + d.getDate() + '日（' + WD[d.getDay()] + '）'; }
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function statusTo(id, m, err) { $(id).textContent = m || ''; $(id).style.color = err ? 'var(--warn)' : 'var(--accent)'; }
+// 1〜3月は前の年の書類を出すことが多いので、前の年を最初に選んでおく
+function defaultYear() { var d = new Date(); return d.getMonth() < 3 ? d.getFullYear() - 1 : d.getFullYear(); }
+function period(d) {
+  if (d.kind === '月') return d.year + '年 ' + (d.from === d.to ? d.from + '月分' : d.from + '月〜' + d.to + '月分');
+  return d.year + '年分';
+}
+// 月の並び（1,2,3,5 → 「1〜3月、5月」）
+function monthText(list) {
+  var out = [], i = 0;
+  while (i < list.length) {
+    var j = i;
+    while (j + 1 < list.length && list[j + 1] === list[j] + 1) j++;
+    out.push(i === j ? list[i] + '月' : list[i] + '〜' + list[j] + '月');
+    i = j + 1;
+  }
+  return out.join('、');
+}
+
+// 合言葉（この端末に覚えておく）
+var memKey = '';
+function getKey() { try { return localStorage.getItem('harukaen_key') || ''; } catch (e) { return memKey; } }
+function setKey(k) { memKey = k; try { if (k) localStorage.setItem('harukaen_key', k); else localStorage.removeItem('harukaen_key'); } catch (e) {} }
+function showKey(msg) { $('app').style.display = 'none'; $('mainTabs').style.display = 'none'; $('loadCard').style.display = 'none'; $('keyCard').style.display = ''; statusTo('keyStatus', msg || '', !!msg); }
+function api(action, data) {
+  var body = {key: getKey(), action: action, data: data};
+  var p = window.DEMO_API ? window.DEMO_API(body) : fetch(API_URL, {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify(body)})
+    .then(function (r) { if (!r.ok) throw new Error('通信できませんでした（' + r.status + '）。'); return r.json(); }, function () {
+      throw new Error('インターネットにつながりませんでした。電波のよいところで、もう一度押してください。入力した内容はそのまま残っています。');
+    });
+  return p.then(function (res) {
+    if (res && res.auth) { setKey(''); showKey('合言葉が違います。もう一度入れてください。'); throw new Error('合言葉が違います。'); }
+    if (!res || !res.ok) throw new Error(res && res.error ? res.error : '保存先から返事がありませんでした。');
+    return res;
+  });
+}
+function setData(d) {
+  docs = d.docs || []; templates = d.templates || [];
+  if (d.sheetUrl) $('sheetNote').innerHTML = '記録は専用のGoogleスプレッドシート（<a href="' + esc(d.sheetUrl) + '" target="_blank" rel="noopener">春香園 税理士提出書類</a>）に保存されます。';
+  renderAll();
+}
+function load() {
+  $('keyCard').style.display = 'none'; $('loadCard').style.display = '';
+  $('loadNote').textContent = '読み込み中です…';
+  api('load').then(function (res) {
+    $('loadCard').style.display = 'none'; $('app').style.display = ''; $('mainTabs').style.display = 'flex';
+    setData(res.data);
+  }).catch(function (e) {
+    if ($('keyCard').style.display === 'none') { $('loadNote').textContent = e.message; $('loadNote').style.color = 'var(--warn)'; }
+  });
+}
+
+// ---- タブ ----
+function showTab(t) {
+  tab = t;
+  document.querySelectorAll('section[data-tab]').forEach(function (s) { s.hidden = s.dataset.tab !== t; });
+  document.querySelectorAll('#mainTabs button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === t); b.setAttribute('aria-selected', b.dataset.tab === t); });
+  window.scrollTo(0, 0);
+}
+function renderAll() { renderChips(); renderSameDay(); renderVisits(); renderDocs(); renderTpl(); updateHint(); }
+
+// ---- 記録する ----
+function fillSelects() {
+  var y = new Date().getFullYear(), h = '';
+  for (var i = y + 1; i >= y - 5; i--) h += '<option value="' + i + '">' + i + '年（令和' + (i - 2018) + '年）</option>';
+  $('year').innerHTML = h;
+  var m = '';
+  for (var k = 1; k <= 12; k++) m += '<option value="' + k + '">' + k + '月</option>';
+  $('from').innerHTML = m; $('to').innerHTML = m;
+}
+function activeTemplates() { return templates.filter(function (t) { return t.use; }); }
+function tplOf(name) { return templates.filter(function (t) { return t.name === name; })[0]; }
+function renderChips() {
+  var name = $('name').value.trim();
+  $('nameChips').innerHTML = activeTemplates().map(function (t) {
+    return '<button type="button" data-name="' + esc(t.name) + '"' + (t.name === name ? ' class="on"' : '') + '>' + esc(t.name) + '</button>';
+  }).join('');
+}
+function setKind(k) {
+  kind = k;
+  document.querySelectorAll('#kindSeg button').forEach(function (b) { b.classList.toggle('on', b.dataset.kind === k); });
+  $('monthBox').style.display = k === '月' ? '' : 'none';
+  updateSaveLabel();
+}
+// 出した月（その年・その書類）
+function coveredMonths(name, year, skipId) {
+  var set = {};
+  docs.forEach(function (d) {
+    if (d.name !== name || d.year !== year || d.kind !== '月' || d.id === skipId) return;
+    for (var m = d.from; m <= d.to; m++) set[m] = true;
+  });
+  return set;
+}
+function yearDocs(name, year, skipId) {
+  return docs.filter(function (d) { return d.name === name && d.year === year && d.kind === '年' && d.id !== skipId; });
+}
+// いつもの書類を選んだら、期間を自動で入れる
+function pickName(name) {
+  $('name').value = name;
+  var t = tplOf(name), y = Number($('year').value);
+  if (t && t.kind === '月ごと') {
+    setKind('月');
+    var cov = coveredMonths(name, y, editId), last = 0;
+    for (var m = 1; m <= 12; m++) if (cov[m]) last = m;
+    var sub = new Date($('date').value + 'T12:00:00');
+    // 提出日の前の月まで（前の年の分なら12月まで）
+    var end = (sub.getFullYear() > y) ? 12 : sub.getMonth();
+    var start = Math.min(last + 1, 12);
+    if (end < start) end = start;
+    $('from').value = start; $('to').value = end;
+  } else if (t && t.kind === '年1回') {
+    setKind('年');
+  }
+  renderChips(); updateHint();
+}
+function updateHint() {
+  var name = $('name').value.trim(), y = Number($('year').value), h = '';
+  if (name) {
+    var cov = coveredMonths(name, y, editId), ms = [];
+    for (var m = 1; m <= 12; m++) if (cov[m]) ms.push(m);
+    var yd = yearDocs(name, y, editId);
+    if (ms.length) h = y + '年の「' + name + '」は ' + monthText(ms) + ' を出しています。';
+    if (yd.length) h += (h ? '\n' : '') + y + '年分の「' + name + '」は ' + yd.map(function (d) { return jpDate(d.date); }).join('、') + ' に出しています。';
+    if (kind === '月' && ms.length) {
+      var dup = [];
+      for (var k = Number($('from').value); k <= Number($('to').value); k++) if (cov[k]) dup.push(k);
+      if (dup.length) h += '\n※ ' + monthText(dup) + ' はもう出した月と重なっています。';
+    }
+  }
+  $('hint').textContent = h; $('hint').style.display = h ? '' : 'none';
+  updateSaveLabel();
+}
+function updateSaveLabel() {
+  var d = $('date').value;
+  if (editId) { $('saveBtn').textContent = '記録を直す'; return; }
+  $('saveBtn').textContent = d ? jpDate(d) + 'に出した書類として保存' : '保存';
+}
+function formData() {
+  return {id: editId || '', date: $('date').value, name: $('name').value.trim(), year: Number($('year').value), kind: kind,
+    from: Number($('from').value), to: Number($('to').value), memo: $('memo').value.trim()};
+}
+function resetForm(keepDate) {
+  editId = '';
+  $('formTitle').textContent = '提出した書類を記録';
+  $('cancelBtn').style.display = 'none';
+  if (!keepDate) $('date').value = today();
+  $('name').value = ''; $('memo').value = ''; $('year').value = defaultYear(); setKind('月');
+  $('from').value = 1; $('to').value = 1;
+  renderChips(); updateHint(); renderSameDay();
+}
+function save() {
+  if (busy) return;
+  var d = formData();
+  if (!d.date) return statusTo('status', '提出日を入れてください。', true);
+  if (!d.name) return statusTo('status', '書類名を選ぶか、書いてください。', true);
+  if (d.kind === '月' && d.from > d.to) return statusTo('status', 'はじめの月が、おわりの月より後になっています。', true);
+  busy = true; $('saveBtn').disabled = true; statusTo('status', '保存しています…');
+  api('saveDoc', d).then(function (res) {
+    var msg = (editId ? '直しました：' : '保存しました：') + d.name + '　' + period(d);
+    setData(res.data); resetForm(true); statusTo('status', msg + '\n同じ日に出したほかの書類も、続けて記録できます。');
+  }).catch(function (e) { statusTo('status', e.message, true); })
+    .then(function () { busy = false; $('saveBtn').disabled = false; });
+}
+function itemHtml(d, opts) {
+  return '<div class="item"><div class="txt"><div class="nm">' + esc(d.name) + '</div><div class="pd">' + esc(period(d)) +
+    (opts && opts.showDate ? '　<span class="note">' + jpDate(d.date, true) + 'に提出</span>' : '') + '</div>' +
+    (d.memo ? '<div class="mm">' + esc(d.memo) + '</div>' : '') + '</div>' +
+    (opts && opts.noActs ? '' : '<div class="acts"><button type="button" data-edit="' + esc(d.id) + '">直す</button><button type="button" class="del" data-del="' + esc(d.id) + '">消す</button></div>') + '</div>';
+}
+function sortDocs(list) { return list.slice().sort(function (a, b) { return a.name.localeCompare(b.name, 'ja') || a.year - b.year || (a.from || 0) - (b.from || 0); }); }
+function renderSameDay() {
+  var d = $('date').value;
+  var list = docs.filter(function (x) { return x.date === d; });
+  $('sameDayCard').style.display = list.length ? '' : 'none';
+  $('sameDayTitle').textContent = (d ? jpDate(d) : '') + 'に出したもの（' + list.length + '件）';
+  $('sameDayList').innerHTML = sortDocs(list).map(function (x) { return itemHtml(x); }).join('');
+}
+function startEdit(id) {
+  var d = docs.filter(function (x) { return x.id === id; })[0];
+  if (!d) return;
+  editId = id;
+  showTab('entry');
+  $('formTitle').textContent = '記録を直す';
+  $('cancelBtn').style.display = '';
+  $('date').value = d.date; $('name').value = d.name; $('year').value = d.year; $('memo').value = d.memo || '';
+  setKind(d.kind === '月' ? '月' : '年');
+  if (d.kind === '月') { $('from').value = d.from; $('to').value = d.to; }
+  statusTo('status', '');
+  renderChips(); updateHint(); renderSameDay();
+}
+function askDelete(btn) {
+  if (busy) return;
+  if (!btn.classList.contains('sure')) {
+    document.querySelectorAll('button.del.sure').forEach(function (b) { b.classList.remove('sure'); b.textContent = '消す'; });
+    btn.classList.add('sure'); btn.textContent = '本当に消す';
+    return;
+  }
+  busy = true; btn.disabled = true; btn.textContent = '消しています…';
+  api('deleteDoc', {id: btn.dataset.del}).then(function (res) {
+    if (editId === btn.dataset.del) resetForm(true);
+    setData(res.data);
+  }).catch(function (e) { alertBox(e.message); btn.disabled = false; btn.textContent = '本当に消す'; })
+    .then(function () { busy = false; });
+}
+function alertBox(m) { statusTo(tab === 'docs' ? 'tplStatus' : 'status', m, true); if (tab === 'visits') window.alert(m); }
+
+// ---- 面会ごと ----
+function renderVisits() {
+  var by = {};
+  docs.forEach(function (d) { (by[d.date] = by[d.date] || []).push(d); });
+  var dates = Object.keys(by).sort().reverse();
+  if (!dates.length) { $('visitList').innerHTML = '<div class="card"><div class="note">まだ記録がありません。「記録する」から入れてください。</div></div>'; return; }
+  var lastYear = '';
+  $('visitList').innerHTML = dates.map(function (dt) {
+    var y = dt.slice(0, 4), head = '';
+    if (y !== lastYear) { head = '<h3>' + y + '年</h3>'; lastYear = y; }
+    return head + '<div class="card visit"><h2>' + jpDate(dt) + '<small>' + by[dt].length + '件</small></h2>' +
+      sortDocs(by[dt]).map(function (d) { return itemHtml(d); }).join('') + '</div>';
+  }).join('');
+}
+
+// ---- 書類ごと ----
+function thisYearEnd(y) {
+  // まだ出していない月の数え方：過ぎた年は12月まで、今年は先月まで
+  var now = new Date();
+  if (y < now.getFullYear()) return 12;
+  if (y > now.getFullYear()) return 0;
+  return now.getMonth();
+}
+function renderDocs() {
+  var y0 = new Date().getFullYear();
+  if (!viewYear) viewYear = defaultYear();
+  var ys = [y0 - 2, y0 - 1, y0];
+  $('yearBtns').innerHTML = ys.map(function (y) { return '<button type="button" data-year="' + y + '"' + (y === viewYear ? ' class="on"' : '') + '>' + y + '年</button>'; }).join('');
+  var y = viewYear, end = thisYearEnd(y), todo = [], html = '';
+  activeTemplates().forEach(function (t) {
+    if (t.kind === '月ごと') {
+      var cov = coveredMonths(t.name, y), done = [], miss = [], cells = '';
+      for (var m = 1; m <= 12; m++) {
+        if (cov[m]) done.push(m); else if (m <= end) miss.push(m);
+        cells += '<span class="' + (cov[m] ? 'ok' : (m <= end ? 'ng' : '')) + '">' + m + '</span>';
+      }
+      if (miss.length) todo.push(t.name + '　' + monthText(miss) + '分');
+      var tag = miss.length ? '<span class="tag ng">まだ ' + miss.length + 'か月</span>' : (done.length === 12 ? '<span class="tag ok">1年分 出しました</span>' : (done.length ? '<span class="tag ok">先月まで出しました</span>' : '<span class="tag fut">これから</span>'));
+      var hist = docs.filter(function (d) { return d.name === t.name && d.year === y && d.kind === '月'; }).sort(function (a, b) { return a.from - b.from; });
+      html += '<div class="doc"><div class="nm"><span>' + esc(t.name) + '</span>' + tag + '</div><div class="months">' + cells + '</div>' +
+        (hist.length ? '<div class="line">' + hist.map(function (d) { return monthText(rangeList(d.from, d.to)) + '分 → ' + jpDate(d.date); }).join('<br>') + '</div>' : '<div class="line">まだ出していません</div>') + '</div>';
+    } else {
+      var yd = yearDocs(t.name, y);
+      var past = end >= 12 || (y === y0);
+      if (!yd.length && past) todo.push(t.name + '　' + y + '年分');
+      html += '<div class="doc"><div class="nm"><span>' + esc(t.name) + '</span>' +
+        (yd.length ? '<span class="tag ok">出しました</span>' : (past ? '<span class="tag ng">まだ</span>' : '<span class="tag fut">これから</span>')) + '</div>' +
+        '<div class="line">' + (yd.length ? yd.map(function (d) { return jpDate(d.date, true) + 'に提出'; }).join('<br>') : y + '年分はまだ出していません') + '</div></div>';
+    }
+  });
+  $('docsTitle').textContent = y + '年分のいつもの書類';
+  $('docBox').innerHTML = html || '<div class="note">いつもの書類がありません。下の「いつもの書類の設定」で入れてください。</div>';
+  $('todoBox').innerHTML = todo.length ? '<ul class="todo">' + todo.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>' : '<div class="alldone">' + y + '年分は、いつもの書類をぜんぶ出しています</div>';
+  $('todoNote').textContent = y === y0 ? '月ごとの書類は、先月の分までを数えています。' : '';
+  var names = {}; activeTemplates().forEach(function (t) { names[t.name] = true; });
+  var others = docs.filter(function (d) { return d.year === y && !names[d.name]; });
+  $('otherCard').style.display = others.length ? '' : 'none';
+  $('otherBox').innerHTML = sortDocs(others).map(function (d) { return itemHtml(d, {showDate: true, noActs: true}); }).join('');
+}
+function rangeList(a, b) { var r = []; for (var i = a; i <= b; i++) r.push(i); return r; }
+
+// ---- いつもの書類の設定 ----
+var tplDraft = null;
+function renderTpl() {
+  tplDraft = templates.map(function (t) { return {name: t.name, kind: t.kind, use: t.use}; });
+  drawTpl();
+}
+function drawTpl() {
+  $('tplBox').innerHTML = tplDraft.map(function (t, i) {
+    return '<div class="tpl" data-i="' + i + '"><input type="text" data-f="name" value="' + esc(t.name) + '" placeholder="書類名" aria-label="書類名">' +
+      '<select data-f="kind" aria-label="出し方"><option' + (t.kind === '月ごと' ? ' selected' : '') + '>月ごと</option><option' + (t.kind === '年1回' ? ' selected' : '') + '>年1回</option></select>' +
+      '<label><input type="checkbox" data-f="use"' + (t.use ? ' checked' : '') + '>使う</label>' +
+      '<button type="button" data-rm="' + i + '">外す</button></div>';
+  }).join('');
+}
+function readTpl() {
+  document.querySelectorAll('#tplBox .tpl').forEach(function (row) {
+    var t = tplDraft[Number(row.dataset.i)];
+    t.name = row.querySelector('[data-f=name]').value.trim();
+    t.kind = row.querySelector('[data-f=kind]').value;
+    t.use = row.querySelector('[data-f=use]').checked;
+  });
+}
+function saveTpl() {
+  if (busy) return;
+  readTpl();
+  var list = tplDraft.filter(function (t) { return t.name; }), seen = {};
+  for (var i = 0; i < list.length; i++) { if (seen[list[i].name]) return statusTo('tplStatus', '「' + list[i].name + '」が2つあります。', true); seen[list[i].name] = true; }
+  busy = true; $('tplSave').disabled = true; statusTo('tplStatus', '保存しています…');
+  api('saveTemplates', {templates: list}).then(function (res) { setData(res.data); statusTo('tplStatus', 'いつもの書類を保存しました。'); })
+    .catch(function (e) { statusTo('tplStatus', e.message, true); })
+    .then(function () { busy = false; $('tplSave').disabled = false; });
+}
+
+// ---- 操作 ----
+fillSelects();
+$('date').value = today(); $('year').value = defaultYear();
+document.querySelectorAll('#mainTabs button').forEach(function (b) { b.addEventListener('click', function () { showTab(b.dataset.tab); }); });
+$('nameChips').addEventListener('click', function (e) { var b = e.target.closest('button[data-name]'); if (b) pickName(b.dataset.name); });
+$('name').addEventListener('input', function () { renderChips(); updateHint(); });
+$('kindSeg').addEventListener('click', function (e) { var b = e.target.closest('button[data-kind]'); if (b) { setKind(b.dataset.kind); updateHint(); } });
+['year', 'from', 'to'].forEach(function (id) { $(id).addEventListener('change', function () {
+  if (id === 'from' && Number($('from').value) > Number($('to').value)) $('to').value = $('from').value;
+  if (id === 'to' && Number($('to').value) < Number($('from').value)) $('from').value = $('to').value;
+  updateHint();
+}); });
+$('date').addEventListener('change', function () { updateSaveLabel(); renderSameDay(); });
+$('saveBtn').addEventListener('click', save);
+$('cancelBtn').addEventListener('click', function () { resetForm(true); statusTo('status', ''); });
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('button[data-edit]'); if (b) return startEdit(b.dataset.edit);
+  b = e.target.closest('button[data-del]'); if (b) return askDelete(b);
+  b = e.target.closest('button[data-year]'); if (b) { viewYear = Number(b.dataset.year); renderDocs(); return; }
+  b = e.target.closest('button[data-rm]'); if (b) { readTpl(); tplDraft.splice(Number(b.dataset.rm), 1); drawTpl(); statusTo('tplStatus', '「保存」を押すと決まります。'); }
+});
+$('tplAdd').addEventListener('click', function () { readTpl(); tplDraft.push({name: '', kind: '年1回', use: true}); drawTpl(); var r = document.querySelectorAll('#tplBox [data-f=name]'); r[r.length - 1].focus(); });
+$('tplSave').addEventListener('click', saveTpl);
+$('keyBtn').addEventListener('click', function () {
+  var k = $('keyInput').value.trim();
+  if (!k) return statusTo('keyStatus', '合言葉を入れてください。', true);
+  setKey(k); load();
+});
+updateSaveLabel();
+if (getKey()) load(); else showKey();
+</script>
+</body>
+</html>
